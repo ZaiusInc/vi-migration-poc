@@ -1,0 +1,6 @@
+name: customers
+fields:
+  - name: vi_migration_poc_example_points
+    type: number
+    display_name: VI Migration POC Example Points
+    description: Do not leave this example in your app!

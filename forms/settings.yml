@@ -1,0 +1,6 @@
+sections:
+  - key: instructions
+    label: Instructions
+    elements:
+    - type: instructions
+      text: Design your settings form in this file. See the [forms documentation](https://docs.developers.zaius.com/zip/app-structure/forms/setup-form.yml) for details.

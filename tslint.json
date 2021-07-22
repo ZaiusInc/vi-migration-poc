@@ -1,0 +1,9 @@
+{
+    "defaultSeverity": "error",
+    "extends": [
+        "@zaiusinc/tslint-presets/node.json"
+    ],
+    "jsRules": {},
+    "rules": {},
+    "rulesDirectory": []
+}

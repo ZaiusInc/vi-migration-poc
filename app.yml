@@ -1,0 +1,38 @@
+meta:
+  app_id: vi_migration_poc
+  display_name: VI Migration POC
+  version: 0.0.0
+  vendor: zaius
+  summary: Nothing
+  support_url: 
+  contact_email: 
+  categories:
+    - Commerce Platform
+
+runtime: node12
+
+functions:
+  handle_event:
+    entry_point: HandleEvent
+    description: Transforms incoming data into Zaius events
+
+jobs:
+  historical_import:
+    entry_point: HistoricalImport
+    description: Performs a one-time historical import when triggered
+
+  nightly_import:
+    entry_point: NightlyImport
+    # runs at midnight every night
+    cron: 0 0 0 ? * *
+    description: Performs a nightly import for data that isn't provided or needed in real-time
+
+liquid_extensions:
+  rot13:
+    entry_point: Rot13
+    description: Translate a string of text through a [ROT-13 transform](https://en.wikipedia.org/wiki/ROT13)
+    input:
+      value:
+        type: string
+        required: true
+        description: The string value to translate by rotating each letter 13 places
