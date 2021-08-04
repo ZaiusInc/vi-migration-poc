@@ -1,0 +1,46 @@
+name: events
+fields:
+  # - name:
+  #   type:
+  #   display_name:
+  #   description:
+  - type: string
+    name: vi_migration_poc_ad_engagement
+    display_name: VI Migration POC Ad Engagement
+    description: Enter VI field which is mapped this field
+  - type: string
+    name: vi_migration_poc_ad_id
+    display_name: VI Migration POC Ad ID
+    description: Your Ad ID
+  - type: string
+    name: vi_migration_poc_flash
+    display_name: VI Migration POC Adobe Flash Version
+    description: Your Adobe Flash Version
+  - type: string
+    name: vi_migration_poc_browser
+    display_name: VI Migration POC Browser
+    description: Your Browser
+  - type: string
+    name: vi_migration_poc_browser_dnt
+    display_name: VI Migration POC Browser Do Not Track
+    description: Your Browser Do Not Track
+  - type: string
+    name: vi_migration_poc_browser_version
+    display_name: VI Migration POC Browser Version
+    description: Your Browser Version
+  - type: string
+    name: vi_migration_poc_campaign
+    display_name: VI Migration POC Campaign
+    description: Your Campaign
+  - type: string
+    name: vi_migration_poc_value
+    display_name: VI Migration POC Campaign Event Value
+    description: Your Campaign Event Value
+  - type: string
+    name: vi_migration_poc_campaign_group_id
+    display_name: VI Migration POC Campaign Group ID
+    description: Your Campaign Group ID
+  - type: string
+    name: vi_migration_poc_campaign_id
+    display_name: VI Migration POC Campaign ID
+    description: Your Campaign ID

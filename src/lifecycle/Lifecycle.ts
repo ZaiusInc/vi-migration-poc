@@ -1,5 +1,9 @@
 import * as App from '@zaius/app-sdk';
 import {logger, storage} from '@zaius/app-sdk';
+import { CustomFormController } from './CustomFormController';
+import { KnownFormController } from './KnownFormController';
+import { AuthFormController } from './AuthFormController';
+import { CustomSection, CUSTOM_SECTION, KNOWN_SECTION, KnownFieldSection, AuthSection, AUTH_SECTION, PoolUpdate} from '../data/FormSettings';
 
 export class Lifecycle extends App.Lifecycle {
   public async onInstall(): Promise<App.LifecycleResult> {
@@ -20,7 +24,58 @@ export class Lifecycle extends App.Lifecycle {
     try {
       // TODO: any logic you need to perform when a setup form section is submitted
       // When you are finished, save the form data to the settings store
-      await storage.settings.put(section, formData);
+      switch (section) {
+        case KNOWN_SECTION:
+          const controller2 = new KnownFormController(formData, result);
+          let sectionData2: KnownFieldSection = {};
+          switch (action) {
+            case 'save_known_field':
+              sectionData2 = await controller2.save_known_field();
+              formData.migrating = true;
+              break;
+            case 'create_custom_field':
+              sectionData2 = await controller2.createCustomField();
+              // const updateArray: PoolUpdate[] = [{
+              //   ipPool: '10',
+              //   ts: '10'
+              // }, {
+              //   ipPool: '11',
+              //   ts: '11'
+              // }, {
+              //   ipPool: '12',
+              //   ts: '12'
+              // }, {
+              //   ipPool: '13',
+              //   ts: '13'
+              // }];
+              // formData.poolTable = key;
+              break;
+          }
+          await storage.settings.put(section, formData);
+          break;
+
+        case AUTH_SECTION:
+          const controller3 = new AuthFormController(formData, result);
+          let sectionData3: AuthSection = {};
+          switch (action) {
+            case 'login':
+              sectionData3 = await controller3.login();
+              formData.authenticated = true;
+              break;
+            case 'logout':
+              sectionData3 = await controller3.logout();
+              formData.account = '';
+              formData.secret = '';
+              formData.authenticated = false;
+              break;
+          }
+          await storage.settings.put(section, formData);
+          break;
+
+        default:
+          result.addToast('danger', `Cannot save unhandled section: ${section}`);
+          break;
+      }
       return result;
     } catch (e) {
       return result.addToast('danger', 'Sorry, an unexpected error occurred. Please try again in a moment.');
@@ -69,5 +124,20 @@ export class Lifecycle extends App.Lifecycle {
   public async onUninstall(): Promise<App.LifecycleResult> {
     // TODO: any logic required to properly uninstall the app
     return {success: true};
+  }
+
+  private buildPoolUpdatesTable(updates?: PoolUpdate[]): string | null {
+    let table;
+    if (updates) {
+      table = ''.concat(
+        '** Update History **\n\n',
+        '|Pool|Updated At|\n',
+        '|------|------|\n',
+      );
+
+      updates.forEach((update) => table += `|${update.ipPool}|${update.ts}\n`);
+    }
+
+    return table;
   }
 }

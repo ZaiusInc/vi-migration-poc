@@ -1,6 +1,183 @@
 sections:
-  - key: instructions
-    label: Instructions
+  ## Authenticate Section
+  - key: auth
+    label: Authenticate
+    properties:
+      - authenticated
     elements:
-    - type: instructions
-      text: Design your settings form in this file. See the [forms documentation](https://docs.developers.zaius.com/zip/app-structure/forms/setup-form.yml) for details.
+    - type: text
+      key: account
+      label: Account
+      help: Your account id for SampleIntegration
+    - type: secret
+      key: secret
+      label: Secret
+      help: Your SampleIntegration API secret
+    - type: button
+      label: Login
+      action: login
+      disabled:
+        operation: all
+        comparators:
+        - key: auth.account
+          empty: true
+        - key: auth.secret
+          empty: true
+    - type: button
+      label: Logout
+      action: logout
+      visible:
+        key: authenticated
+        equals: true
+  ## Toggle Section
+  - key: toggle_custom_schema
+    label: Using custom schema
+    visible:
+      key: auth.authenticated
+      equals: true
+    elements:
+      - type: toggle
+        key: usingCustomSchema
+        defaultValue: false
+        label: No/Yes
+        help: Using custom schema or not
+      - type: button
+        label: Save
+        action: save
+        visible: false
+  ## Custom Schema Section
+  - key: custom_schema_section
+    label: Custom Schema
+    visible:
+      operation: all
+      comparators:
+      - key: auth.authenticated
+        equals: true
+      - key: toggle_custom_schema.usingCustomSchema
+        equals: true
+    elements:
+      - type: text
+        key: custom_schema
+        label: Custom Schema
+        help: Copy your json schema
+        multiline: true
+      - type: instructions
+        text: 
+          'Mapping example: 
+          [
+            {
+              "VI-source":"VIcoulumn1",
+              "ODP-destination":"Odpcolumn1"
+            },
+            ....
+            ....  
+          ]'
+  ## Known Field Section
+  - key: known_fields
+    label: Known Fields
+    properties:
+      - migrating
+      # - poolTable
+    visible:
+      operation: all
+      comparators:
+      - key: auth.authenticated
+        equals: true
+      - key: toggle_custom_schema.usingCustomSchema
+        equals: false
+    elements:
+      # - type: instructions
+      #   text: |
+      #     {{{known_fields.poolTable}}}
+      - type: select
+        key: region
+        label: Region
+        help: Choose your region
+        dataSource:
+          type: app
+          function: handle_region
+      - type: text
+        key: ad_engagement
+        label: Ad Engagement
+        help: Enter VI field which is mapped this field
+      - type: text
+        key: ad_id
+        label: Ad ID
+        help: Your Ad ID
+      - type: text
+        key: flash
+        label: Adobe Flash Version
+        help: Your Adobe Flash Version
+      - type: text
+        key: browser
+        label: Browser
+        help: Your Browser
+      - type: text
+        key: browser_dnt
+        label: Browser Do Not Track
+        help: Your Browser Do Not Track
+      - type: text
+        key: browser_version
+        label: Browser Version
+        help: Your Browser Version
+      - type: text
+        key: campaign
+        label: Campaign
+        help: Your Campaign
+      - type: text
+        key: value
+        label: Campaign Event Value
+        help: Your Campaign Event Value
+      - type: text
+        key: campaign_group_id
+        label: Campaign Group ID
+        help: Your Campaign Group ID
+      - type: text
+        key: campaign_id
+        label: Campaign ID
+        help: Your Campaign ID
+      - type: button
+        label: Create custom field
+        action: create_custom_field
+        style: none
+      - type: text
+        key: custom_field
+        label: Custom Field
+        help: Your custom field.
+      - type: text
+        key: vi_field
+        label: Mapped VI Field
+        help: VI field which will be mapped with the above custom field.
+      - type: divider
+      - type: text
+        key: custom_field2
+        label: Custom Field 2
+        help: Your custom field 2.
+      - type: text
+        key: vi_field2
+        label: Mapped VI Field 2
+        help: VI field 2 which will be mapped with the above custom field.
+      - type: divider
+      - type: button
+        label: Migrate
+        action: save_known_field
+        style: primary
+  ## Migration Progress Section
+  - key: migration_progress
+    label: Migration Progress
+    visible:
+      key: auth.authenticated
+      equals: true
+    elements:
+      - type: instructions
+        visible:
+          key: known_fields.migrating
+          equals: false
+        text:
+          No migration in progress. Use the configure tab to start a migration.
+      - type: instructions
+        visible:
+          key: known_fields.migrating
+          equals: true
+        text:
+          Migration in progress.

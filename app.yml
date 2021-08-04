@@ -1,20 +1,27 @@
 meta:
   app_id: vi_migration_poc
   display_name: VI Migration POC
-  version: 0.0.0
+  version: 0.0.53
   vendor: zaius
-  summary: Nothing
-  support_url: 
-  contact_email: 
+  summary: Doan Thanh Nguyen Testing
+  support_url: http://www.google.com
+  contact_email: doanthanh@abc.com
   categories:
     - Commerce Platform
 
 runtime: node12
 
+environment:
+  - APP_ENV_AWS_ACCESS_KEY_ID
+  - APP_ENV_AWS_SECRET_ACCESS_KEY
+
 functions:
   handle_event:
     entry_point: HandleEvent
     description: Transforms incoming data into Zaius events
+  handle_region:
+    entry_point: HandleRegion
+    description: Get all region
 
 jobs:
   historical_import:
